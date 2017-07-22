@@ -15,6 +15,19 @@ spring:
   session:
     key: BOARD_SESSION_KEY
 
+security:
+  oauth2:
+    client:
+      clientId: 152190478688056
+      clientSecret: d3f930dbe45138517f9358bd25eec13e
+      accessTokenUri: https://graph.facebook.com/oauth/access_token
+      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+      tokenName: oauth_token
+      authenticationScheme: query
+      clientAuthenticationScheme: form
+    resource:
+      userInfoUri: https://graph.facebook.com/me
+
 ---
 
 spring:
@@ -23,10 +36,6 @@ spring:
     username: test
     password: test
     url: jdbc:mysql://localhost/exquizme?useUnicode=true&characterEncoding=utf8&useSSL=false
-  social:
-    facebook:
-      appId: 152190478688056
-      appSecret: d3f930dbe45138517f9358bd25eec13e
 
 server:
   host: http://localhost:9000
