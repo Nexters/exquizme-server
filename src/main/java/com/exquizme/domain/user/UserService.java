@@ -18,14 +18,12 @@ public class UserService {
 
     @Transactional(readOnly = false)
     public User create(UserDto userDto) {
-        User user = userRepository.save(User.builder()
+        return userRepository.save(User.builder()
                 .fbId(userDto.getFbId())
                 .email(userDto.getEmail())
                 .nickname(userDto.getNickname())
                 .profileImg(userDto.getProfileImg())
                 .build());
-
-        return user;
     }
 
     public User findOne(Long id) {

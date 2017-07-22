@@ -1,6 +1,6 @@
 server:
   port: 9000
-  context-path: /api
+  context-path: /
 
 spring:
   jackson:
@@ -23,6 +23,10 @@ spring:
     username: test
     password: test
     url: jdbc:mysql://localhost/exquizme?useUnicode=true&characterEncoding=utf8&useSSL=false
+  social:
+    facebook:
+      appId: 152190478688056
+      appSecret: d3f930dbe45138517f9358bd25eec13e
 
 server:
   host: http://localhost:9000
