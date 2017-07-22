@@ -26,11 +26,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users/test")
-    public void test() {
-        log.info("TEST");
-    }
-
     @GetMapping("/login")
     public String helloFacebook(Model model) {
         if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
@@ -39,7 +34,7 @@ public class UserController {
 
         String [] fields = { "id", "email" };
         User userProfile = facebook.fetchObject("me", User.class, fields);
-        facebook.userOperations().getUserProfile();
+        
         return "user";
     }
 
