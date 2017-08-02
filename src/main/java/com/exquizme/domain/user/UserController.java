@@ -23,8 +23,9 @@ public class UserController {
     @GetMapping("/")
     public RedirectView main(Principal principal) {
         // TODO: login 성공 후 이동할 클라이언트 페이지로 리다이렉트
+        System.out.println(principal);
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("");
+        redirectView.setUrl("/user");
         return redirectView;
     }
 
