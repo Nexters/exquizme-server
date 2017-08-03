@@ -10,6 +10,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     show-sql: true
+    format-sql: true
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
     open-in-view: false
   session:
