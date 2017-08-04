@@ -29,4 +29,8 @@ public class UserService {
     public User findOne(Long id) {
         return userRepository.findOne(id);
     }
+
+    public User findByFbId(Long fbId) {
+        return userRepository.findByFbId(fbId);
+    }
 }

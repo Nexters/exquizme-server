@@ -28,7 +28,7 @@ public class User {
     private Long id;
 
     @Column(name = "fb_id")
-    private String fbId;
+    private Long fbId;
 
     @Column(name = "email", nullable = true)
     private String email;

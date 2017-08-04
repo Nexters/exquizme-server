@@ -34,8 +34,14 @@ public class UserController {
         Long fbId = (Long) userDetails.get("id");
         String nickname = (String) userDetails.get("name");
 
-        // TODO: 회원가입 처리
+        User user = userService.findByFbId(fbId);
 
+        if (Objects.isNull(user)) {
+            UserDto userDto = new UserDto();
+            userDto.setFbId(fbId);
+            userDto.setNickname(nickname);
+            userService.create(userDto);
+        }
 
         // TODO: login 성공 후 이동할 클라이언트 페이지로 리다이렉트
         redirectView.setUrl("/user");
