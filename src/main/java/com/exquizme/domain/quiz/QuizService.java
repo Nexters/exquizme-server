@@ -14,8 +14,4 @@ public class QuizService {
     @Autowired
     private QuizRepository quizRepository;
 
-    @Transactional
-    public Quiz create(QuizDto quizDto){
-        return null;
-    }
 }

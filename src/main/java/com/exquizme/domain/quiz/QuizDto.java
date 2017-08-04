@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class QuizDto {
     private Long id;
-    private Long quiz_id;
-    private Long quiz_option_id;
+    private String text;
+    private String type;
+    private Long user_id;
 }
