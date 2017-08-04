@@ -23,7 +23,7 @@ public class ExquizmeApplication extends WebSecurityConfigurerAdapter {
 		http
 				.antMatcher("/**") // TODO: 로그인 필요한 요청들만 여기에 패턴으로 지정
 				.authorizeRequests()
-				.antMatchers("/", "/login**", "/webjars/**")
+				.antMatchers("/", "/login**")
 				.permitAll()
 				.anyRequest()
 				.authenticated();
