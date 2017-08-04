@@ -1,10 +1,13 @@
 package com.exquizme.domain.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Created by godong9 on 2017. 7. 22..
@@ -33,4 +36,20 @@ public class UserService {
     public User findByFbId(Long fbId) {
         return userRepository.findByFbId(fbId);
     }
+
+    public User getCurrentUser(Principal principal) {
+        HashMap userDetails = (HashMap)((OAuth2Authentication)principal).getUserAuthentication().getDetails();
+        Long fbId = Long.parseLong((String) userDetails.get("id"));
+        String nickname = (String) userDetails.get("name");
+
+        User user = findByFbId(fbId);
+        if (Objects.isNull(user)) {
+            UserDto userDto = new UserDto();
+            userDto.setFbId(fbId);
+            userDto.setNickname(nickname);
+            user = create(userDto);
+        }
+        return user;
+    }
+
 }
