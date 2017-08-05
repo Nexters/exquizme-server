@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by godong9 on 2017. 8. 5..
  */
@@ -27,8 +29,11 @@ public class QuizResultService {
                 .wrong(quizResultDto.getWrong())
                 .time(quizResultDto.getTime())
                 .nickname(quizResultDto.getNickname())
-                .score(quizResultDto.getScore())
                 .quizGroup(quizResultDto.getQuizGroup())
                 .build());
+    }
+
+    public List<QuizResult> findAllByQuizGroup(Long quizGroupId) {
+        return quizResultRepository.findByQuizGroupIdOrderByCorrectDescTimeAsc(quizGroupId);
     }
 }

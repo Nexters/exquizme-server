@@ -110,8 +110,8 @@ public class QuizController {
 
     /**
      * @api {post} /quiz/results Create quiz result
-     * @apiName CreateQuizGroup
-     * @apiGroup QuizGroup
+     * @apiName CreateQuizResult
+     * @apiGroup QuizResult
      *
      * @apiParam {Number} correct 맞춘 퀴즈 개수
      * @apiParam {Number} wrong 틀린 퀴즈 개수
@@ -135,7 +135,22 @@ public class QuizController {
         return ServerResponse.success(quizResultService.create(quizResultDto));
     }
 
-    // 퀴즈 결과 조회 API
-
+    /**
+     * @api {get} /quiz/results/:guizGroupId Get quiz result list
+     * @apiName GetQuizResults
+     * @apiGroup QuizResult
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object[]} data QuizResult 객체 배열
+     * @apiSuccess {Number} data.id QuizResult id
+     * @apiSuccess {Number} data.correct 정답 개수
+     * @apiSuccess {Number} data.wrong 오답 개수
+     * @apiSuccess {Number} data.time 걸린 시간
+     * @apiSuccess {Number} data.nickname 닉네임
+     */
+    @GetMapping("/quiz/results/{quizGroupId}")
+    public ServerResponse getQuizResults(@PathVariable @Valid Long quizGroupId) {
+        return ServerResponse.success(quizResultService.findAllByQuizGroup(quizGroupId));
+    }
 
 }
