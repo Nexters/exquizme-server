@@ -23,8 +23,25 @@ public class QuizController {
     @Autowired
     private UserService userService;
 
+
+    // 퀴즈 리스트 가져오는 API
     @GetMapping("/quizzes")
     public User getQuizzes(Principal principal) {
         return userService.getCurrentUser(principal);
     }
+
+    // 퀴즈 그룹 만드는 API
+
+    // 퀴즈 그룹 내려주는 API (퀴즈목록, 정답)
+
+    // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
+
+    // 퀴즈 삭제
+
+    // 퀴즈 그룹 가져오는 API (유저 ID)
+
+    // 퀴즈 결과 생성 API
+
+    // 퀴즈 결과 조회 API
+
 }
