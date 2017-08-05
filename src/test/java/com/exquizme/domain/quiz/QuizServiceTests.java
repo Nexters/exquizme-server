@@ -17,6 +17,9 @@ public class QuizServiceTests {
     @Autowired
     private QuizService quizService;
 
+    /**
+     * Make user test.
+     */
     @Test
     public void makeUserTest() {
         Quiz quiz = new Quiz();
