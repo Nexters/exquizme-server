@@ -9,6 +9,6 @@ public class QuizDto {
     private Long id;
     private String text;
     private QuizType type;
-    private User userId;
+    private User user;
 
 }

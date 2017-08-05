@@ -1,9 +1,12 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 /**
  * Created by garinkim on 2017. 8. 4..
@@ -16,13 +19,13 @@ public class QuizService {
     private QuizRepository quizRepository;
 
     // 단일 퀴즈 생성
-    public Quiz makeQuiz(Quiz paramQuiz) {
-        Quiz quiz = new Quiz();
-        quiz.setId(paramQuiz.getId());
-        quiz.setText(paramQuiz.getText());
-        quiz.setType(paramQuiz.getType());
-        quiz.setUser(paramQuiz.getUser());
-        quizRepository.save(quiz);
+    @Transactional(readOnly = false)
+    public Quiz createQuiz(QuizDto quizDto) {
+        Quiz quiz = quizRepository.save(Quiz.builder()
+        .text(quizDto.getText())
+        .type(quizDto.getType())
+        .user(quizDto.getUser())
+        .build());
         return quiz;
     }
 
