@@ -33,7 +33,7 @@ public class QuizResultService {
                 .build());
     }
 
-    public List<QuizResult> findAllByQuizGroup(Long quizGroupId) {
+    public List<QuizResult> findByQuizGroup(Long quizGroupId) {
         return quizResultRepository.findByQuizGroupIdOrderByCorrectDescTimeAsc(quizGroupId);
     }
 }
