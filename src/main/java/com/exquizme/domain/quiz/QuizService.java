@@ -1,5 +1,7 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.option.QuizOption;
+import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,12 @@ public class QuizService {
         .build());
         return quiz;
     }
+
+    @Transactional(readOnly = false)
+    public QuizOption createQuizOption(QuizOptionDto quizOptionDto){
+       return null;
+    }
+
 
 
 }

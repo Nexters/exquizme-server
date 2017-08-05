@@ -1,9 +1,11 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.answer.QuizAnswer;
 import com.exquizme.domain.quiz.answer.QuizAnswerDto;
 import com.exquizme.domain.quiz.group.QuizGroupDto;
 import com.exquizme.domain.quiz.group.QuizGroupForm;
 import com.exquizme.domain.quiz.group.QuizGroupService;
+import com.exquizme.domain.quiz.option.QuizOption;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserService;
@@ -97,6 +99,8 @@ public class QuizController {
         quizOptionDto.setQuiz(newQuiz);
 
         //quiz_result
+        QuizAnswerDto quizAnswerDto = new QuizAnswerDto();
+
 
 
         return ServerResponse.success();
