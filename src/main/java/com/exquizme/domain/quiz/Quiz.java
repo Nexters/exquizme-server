@@ -1,5 +1,6 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.group.QuizGroup;
 import com.exquizme.domain.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

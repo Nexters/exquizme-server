@@ -1,4 +1,4 @@
-package com.exquizme.domain.quiz;
+package com.exquizme.domain.quiz.group;
 
 import com.exquizme.domain.user.User;
 import lombok.*;
