@@ -20,10 +20,10 @@ public class ExquizmeApplication extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
+		http.csrf().disable()
 				.antMatcher("/**") // TODO: 로그인 필요한 요청들만 여기에 패턴으로 지정
 				.authorizeRequests()
-				.antMatchers("/", "/login**")
+				.antMatchers("/**")
 				.permitAll()
 				.anyRequest()
 				.authenticated();

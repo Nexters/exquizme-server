@@ -1,5 +1,6 @@
 package com.exquizme.domain.user;
 
+import com.exquizme.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,12 @@ public class UserService {
         return userRepository.findByFbId(fbId);
     }
 
+    @Transactional(readOnly = false)
     public User getCurrentUser(Principal principal) {
+        if (Objects.isNull(principal)) {
+            throw new UserException("Need login!");
+        }
+
         HashMap userDetails = (HashMap)((OAuth2Authentication)principal).getUserAuthentication().getDetails();
         Long fbId = Long.parseLong((String) userDetails.get("id"));
         String nickname = (String) userDetails.get("name");
@@ -52,4 +58,7 @@ public class UserService {
         return user;
     }
 
+    public User getTestUser() {
+        return User.builder().id(1L).build();
+    }
 }

@@ -26,7 +26,7 @@ public class UserServiceTests {
     @Test
     public void fail_findOne_when_invalid_id() {
         // given
-        UserDto testUserDto = TestHelper.getTestUserDto("1234567890");
+        UserDto testUserDto = TestHelper.getTestUserDto(1234567890L);
         userService.create(testUserDto);
 
         // when
@@ -39,7 +39,7 @@ public class UserServiceTests {
     @Test
     public void success_findOne() {
         // given
-        String testFbId = "1234567890";
+        Long testFbId = 1234567890L;
         UserDto testUserDto = TestHelper.getTestUserDto(testFbId);
         User testUser = userService.create(testUserDto);
 
