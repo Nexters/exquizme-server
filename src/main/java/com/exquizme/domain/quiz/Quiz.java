@@ -31,7 +31,11 @@ public class Quiz {
     private String text;
 
     @Column(name = "type")
-    private String type;
+    private QuizType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quiz_group_id")
+    private QuizGroup quizGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
