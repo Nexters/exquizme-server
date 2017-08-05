@@ -6,6 +6,7 @@ import com.exquizme.domain.quiz.group.QuizGroupService;
 import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserService;
 import com.exquizme.response.ServerResponse;
+import com.mysql.fabric.Server;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -41,8 +42,6 @@ public class QuizController {
         return userService.getCurrentUser(principal);
     }
 
-    // 퀴즈 그룹 만드는 API
-
     /**
      * @api {post} /quiz/groups Create quiz group
      * @apiName CreateQuizGroup
@@ -68,12 +67,17 @@ public class QuizController {
         quizGroupDto.setQuizIds(quizGroupForm.getQuizIds());
         quizGroupDto.setUser(user);
 
-        quizGroupService.createQuizGroup(quizGroupDto);
-
-        return ServerResponse.success();
+        return ServerResponse.success(quizGroupService.createQuizGroup(quizGroupDto));
     }
 
     // 퀴즈 그룹 내려주는 API (퀴즈목록, 정답)
+    @GetMapping("/quiz/groups/{id}")
+    public ServerResponse getQuizGroup(@PathVariable @Valid Long id) {
+
+        // TODO: 퀴즈목록, 정답 내려줘야 함!
+
+        return ServerResponse.success();
+    }
 
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
 

@@ -30,6 +30,10 @@ public class QuizGroupService {
     @Autowired
     private QuizGroupRepository quizGroupRepository;
 
+    public QuizGroup findOne(Long id) {
+        return quizGroupRepository.findOne(id);
+    }
+
     @Transactional(readOnly = false)
     public QuizGroup createQuizGroup(QuizGroupDto quizGroupDto) {
         QuizGroup quizGroup = quizGroupRepository.save(QuizGroup.builder()
