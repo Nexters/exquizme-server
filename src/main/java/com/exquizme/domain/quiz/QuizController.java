@@ -1,8 +1,10 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.answer.QuizAnswerDto;
 import com.exquizme.domain.quiz.group.QuizGroupDto;
 import com.exquizme.domain.quiz.group.QuizGroupForm;
 import com.exquizme.domain.quiz.group.QuizGroupService;
+import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserService;
 import com.exquizme.response.ServerResponse;
@@ -73,19 +75,31 @@ public class QuizController {
     // 퀴즈 그룹 내려주는 API (퀴즈목록, 정답)
     @GetMapping("/quiz/groups/{id}")
     public ServerResponse getQuizGroup(@PathVariable @Valid Long id) {
-
         // TODO: 퀴즈목록, 정답 내려줘야 함!
-
         return ServerResponse.success();
     }
 
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
-
     @PostMapping("/quizzes")
-    public Quiz makeQuiz(Quiz quiz){
+    public ServerResponse postQuiz(Principal principal,QuizForm quizForm){
 
-        // 퀴즈 테이블 -> 옵션 > 정답
-        return quizService.makeQuiz(quiz);
+        // TODO: quizzes -> quiz_options -> quiz_results
+        User user = userService.getTestUser();
+        // quizzes
+        QuizDto quizDto = new QuizDto();
+        quizDto.setText(quizForm.getText());
+        quizDto.setType(quizForm.getType());
+        quizDto.setUser(user);
+        Quiz newQuiz = quizService.createQuiz(quizDto);
+
+        //quiz_option
+        QuizOptionDto quizOptionDto = new QuizOptionDto();
+        quizOptionDto.setQuiz(newQuiz);
+
+        //quiz_result
+
+
+        return ServerResponse.success();
     }
 
     // 퀴즈 삭제

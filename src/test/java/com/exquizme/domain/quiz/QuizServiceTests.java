@@ -22,7 +22,6 @@ public class QuizServiceTests {
      */
     @Test
     public void makeUserTest() {
-        Quiz quiz = new Quiz();
-        System.out.println("test");
     }
+
 }
