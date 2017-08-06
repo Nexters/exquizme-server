@@ -1,11 +1,9 @@
 package com.exquizme.domain.quiz;
 
-import com.exquizme.domain.quiz.answer.QuizAnswer;
 import com.exquizme.domain.quiz.answer.QuizAnswerDto;
 import com.exquizme.domain.quiz.group.QuizGroupDto;
 import com.exquizme.domain.quiz.group.QuizGroupForm;
 import com.exquizme.domain.quiz.group.QuizGroupService;
-import com.exquizme.domain.quiz.option.QuizOption;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.quiz.result.QuizResultDto;
 import com.exquizme.domain.quiz.result.QuizResultForm;
@@ -43,13 +41,6 @@ public class QuizController {
     @Autowired
     private UserService userService;
 
-
-    // 퀴즈 리스트 가져오는 API
-    @GetMapping("/quizzes")
-    public User getQuizzes(Principal principal) {
-        return userService.getCurrentUser(principal);
-    }
-
     /**
      * @api {post} /quiz/groups Create quiz group
      * @apiName CreateQuizGroup
@@ -84,6 +75,15 @@ public class QuizController {
         return ServerResponse.success();
     }
 
+    // 퀴즈 그룹 가져오는 API (유저 ID)
+    
+
+    // 퀴즈 리스트 가져오는 API
+    @GetMapping("/quizzes")
+    public User getQuizzes(Principal principal) {
+        return userService.getCurrentUser(principal);
+    }
+
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
     @PostMapping("/quizzes")
     public ServerResponse postQuiz(Principal principal,QuizForm quizForm){
@@ -112,7 +112,6 @@ public class QuizController {
     // 퀴즈 삭제
 
     // 퀴즈 그룹 가져오는 API (유저 ID)
-
     /**
      * @api {post} /quiz/results Create quiz result
      * @apiName CreateQuizResult
@@ -155,7 +154,7 @@ public class QuizController {
      */
     @GetMapping("/quiz/results/{quizGroupId}")
     public ServerResponse getQuizResults(@PathVariable @Valid Long quizGroupId) {
-        return ServerResponse.success(quizResultService.findAllByQuizGroup(quizGroupId));
+        return ServerResponse.success(quizResultService.findByQuizGroup(quizGroupId));
     }
 
 }
