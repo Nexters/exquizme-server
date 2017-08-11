@@ -42,7 +42,7 @@ public class QuizResult {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "score")
+    @Column(name = "score", nullable = true)
     private Integer score;
 
     @CreatedDate

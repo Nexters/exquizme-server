@@ -1,22 +1,20 @@
 package com.exquizme.domain.quiz;
 
-import com.exquizme.domain.quiz.answer.QuizAnswerDto;
 import com.exquizme.domain.quiz.group.QuizGroupDto;
 import com.exquizme.domain.quiz.group.QuizGroupForm;
 import com.exquizme.domain.quiz.group.QuizGroupService;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
+import com.exquizme.domain.quiz.result.QuizResultDto;
+import com.exquizme.domain.quiz.result.QuizResultForm;
+import com.exquizme.domain.quiz.result.QuizResultService;
 import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserService;
 import com.exquizme.response.ServerResponse;
-import com.mysql.fabric.Server;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.security.Principal;
 
@@ -27,6 +25,8 @@ import java.security.Principal;
 @Slf4j
 @RestController
 public class QuizController {
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private QuizService quizService;
@@ -35,14 +35,10 @@ public class QuizController {
     private QuizGroupService quizGroupService;
 
     @Autowired
+    private QuizResultService quizResultService;
+
+    @Autowired
     private UserService userService;
-
-
-    // 퀴즈 리스트 가져오는 API
-    @GetMapping("/quizzes")
-    public User getQuizzes(Principal principal) {
-        return userService.getCurrentUser(principal);
-    }
 
     /**
      * @api {post} /quiz/groups Create quiz group
@@ -57,7 +53,6 @@ public class QuizController {
      * @apiSuccess {Number} data.id QuizGroup id
      * @apiSuccess {Number} data.url QuizGroup url
      * @apiSuccess {Number} data.title QuizGroup title
-     * @apiSuccess {Number} data.user_id QuizGroup 유저 id
      */
     @PostMapping("/quiz/groups")
     public ServerResponse postQuizGroup(Principal principal, @RequestBody @Valid QuizGroupForm quizGroupForm) {
@@ -77,6 +72,15 @@ public class QuizController {
     public ServerResponse getQuizGroup(@PathVariable @Valid Long id) {
         // TODO: 퀴즈목록, 정답 내려줘야 함!
         return ServerResponse.success();
+    }
+
+    // 퀴즈 그룹 가져오는 API (유저 ID)
+    
+
+    // 퀴즈 리스트 가져오는 API
+    @GetMapping("/quizzes")
+    public User getQuizzes(Principal principal) {
+        return userService.getCurrentUser(principal);
     }
 
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
@@ -104,11 +108,49 @@ public class QuizController {
 
     // 퀴즈 삭제
 
-    // 퀴즈 그룹 가져오는 API (유저 ID)
+    /**
+     * @api {post} /quiz/results Create quiz result
+     * @apiName CreateQuizResult
+     * @apiGroup QuizResult
+     *
+     * @apiParam {Number} correct 맞춘 퀴즈 개수
+     * @apiParam {Number} wrong 틀린 퀴즈 개수
+     * @apiParam {Number} time 걸린 시간 (초)
+     * @apiParam {String} nickname 닉네임
+     * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data QuizResult 객체
+     * @apiSuccess {Number} data.id QuizResult id
+     * @apiSuccess {Number} data.correct 정답 개수
+     * @apiSuccess {Number} data.wrong 오답 개수
+     * @apiSuccess {Number} data.time 걸린 시간
+     * @apiSuccess {Number} data.nickname 닉네임
+     */
+    @PostMapping("/quiz/results")
+    public ServerResponse postQuizResult(@RequestBody @Valid QuizResultForm quizResultForm) {
+        QuizResultDto quizResultDto = modelMapper.map(quizResultForm, QuizResultDto.class);
+        quizResultDto.setQuizGroup(quizGroupService.findOne(quizResultForm.getQuizGroupId()));
 
-    // 퀴즈 결과 생성 API
+        return ServerResponse.success(quizResultService.create(quizResultDto));
+    }
 
-    // 퀴즈 결과 조회 API
-
+    /**
+     * @api {get} /quiz/results/:guizGroupId Get quiz result list
+     * @apiName GetQuizResults
+     * @apiGroup QuizResult
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object[]} data QuizResult 객체 배열
+     * @apiSuccess {Number} data.id QuizResult id
+     * @apiSuccess {Number} data.correct 정답 개수
+     * @apiSuccess {Number} data.wrong 오답 개수
+     * @apiSuccess {Number} data.time 걸린 시간
+     * @apiSuccess {Number} data.nickname 닉네임
+     */
+    @GetMapping("/quiz/results/{quizGroupId}")
+    public ServerResponse getQuizResults(@PathVariable @Valid Long quizGroupId) {
+        return ServerResponse.success(quizResultService.findByQuizGroup(quizGroupId));
+    }
 
 }

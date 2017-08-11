@@ -1,5 +1,6 @@
 package com.exquizme.domain.user;
 
+import com.exquizme.response.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,14 @@ import java.util.Objects;
 @Slf4j
 @RestController
 public class UserController {
+
+    /**
+     * @api {get} /login Login page
+     * @apiName LoginPage
+     * @apiGroup User
+     *
+     * @apiDescription 로그인 페이지. 페이지를 로그인 페이지로 직접 이동해야 함!
+     */
 
     @Autowired
     private UserService userService;
@@ -36,7 +45,7 @@ public class UserController {
     }
 
     @RequestMapping("/user")
-    public Principal user(Principal principal) {
-        return principal;
+    public ServerResponse user(Principal principal) {
+        return ServerResponse.success(userService.getCurrentUser(principal));
     }
 }
