@@ -1,5 +1,6 @@
-package com.exquizme.domain.user;
+package com.exquizme.domain.quiz.option;
 
+import com.exquizme.domain.quiz.Quiz;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by godong9 on 2017. 7. 22..
+ * Created by godong9 on 2017. 8. 5..
  */
 
 @Data
@@ -19,25 +20,23 @@ import java.util.Date;
 @EqualsAndHashCode(of = "id")
 @ToString
 @Entity
-@Table(name = "users")
+@Table(name = "quiz_options")
 @EntityListeners({AuditingEntityListener.class})
-public class User {
+public class QuizOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "fb_id")
-    private Long fbId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
 
-    @Column(name = "email", nullable = true)
-    private String email;
+    @Column(name = "sequence")
+    private Integer sequence;
 
-    @Column(name = "profile_img", nullable = true)
-    private String profileImg;
-
-    @Column(name = "nickname", nullable = true)
-    private String nickname;
+    @Column(name = "text")
+    private String text;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class UserDto {
     private Long id;
-    private String fbId;
+    private Long fbId;
     private String nickname;
     private String email;
     private String profileImg;

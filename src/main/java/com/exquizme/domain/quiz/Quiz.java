@@ -1,5 +1,7 @@
-package com.exquizme.domain.user;
+package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.group.QuizGroup;
+import com.exquizme.domain.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -9,9 +11,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by godong9 on 2017. 7. 22..
+ * Created by garinkim on 2017. 8. 4..
  */
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,25 +20,28 @@ import java.util.Date;
 @EqualsAndHashCode(of = "id")
 @ToString
 @Entity
-@Table(name = "users")
+@Table(name = "quizzes")
 @EntityListeners({AuditingEntityListener.class})
-public class User {
+public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "fb_id")
-    private Long fbId;
+    @Column(name = "text")
+    private String text;
 
-    @Column(name = "email", nullable = true)
-    private String email;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private QuizType type;
 
-    @Column(name = "profile_img", nullable = true)
-    private String profileImg;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quiz_group_id")
+    private QuizGroup quizGroup;
 
-    @Column(name = "nickname", nullable = true)
-    private String nickname;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
