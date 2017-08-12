@@ -125,14 +125,13 @@ public class QuizController {
         QuizAnswerDto quizAnswerDto = new QuizAnswerDto();
 
         //quiz_option
-        QuizOption quizOption = new QuizOption();
         String[] options = quizForm.getOptions();
         QuizOptionDto quizOptionDto = new QuizOptionDto();
         for(int i=0 ;i <options.length ;i++){
             quizOptionDto.setOrder(i);
             quizOptionDto.setQuiz(newQuiz);
             quizOptionDto.setText(options[i]);
-            quizOption = quizService.createQuizOption(quizOptionDto);
+            QuizOption quizOption = quizService.createQuizOption(quizOptionDto);
             if(i == quizForm.getAnswerIdx()){
                 quizAnswerDto.setQuizOption(quizOption);
             }
@@ -140,8 +139,9 @@ public class QuizController {
 
         //quiz_Answer
         quizAnswerDto.setQuiz(newQuiz);
-        QuizAnswer quizAnswer = quizService.createQuizAnswer(quizAnswerDto);
-        return ServerResponse.success();
+        quizService.createQuizAnswer(quizAnswerDto);
+
+        return ServerResponse.success(QuizData.getQuizData(newQuiz));
     }
 
     // 퀴즈 삭제
