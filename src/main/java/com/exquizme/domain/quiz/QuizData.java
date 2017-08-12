@@ -14,4 +14,10 @@ public class QuizData {
     private Long id;
     private List<QuizOptionData> quizOptionList;
 
+//    public static QuizData getQuizData(Quiz quiz){
+//
+//
+//    }
+//    
+
 }

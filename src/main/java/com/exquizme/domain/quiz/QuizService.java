@@ -1,5 +1,8 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.answer.QuizAnswer;
+import com.exquizme.domain.quiz.answer.QuizAnswerDto;
+import com.exquizme.domain.quiz.answer.QuizAnswerRepository;
 import com.exquizme.domain.quiz.option.QuizOption;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.quiz.option.QuizOptionRepository;
@@ -24,6 +27,9 @@ public class QuizService {
     @Autowired
     private QuizOptionRepository quizOptionRepository;
 
+    @Autowired
+    private QuizAnswerRepository quizAnswerRepository;
+
     // 단일 퀴즈 생성
     @Transactional(readOnly = false)
     public Quiz createQuiz(QuizDto quizDto) {
@@ -37,8 +43,23 @@ public class QuizService {
 
     @Transactional(readOnly = false)
     public QuizOption createQuizOption(QuizOptionDto quizOptionDto){
-       return null;
+        QuizOption quizOption = quizOptionRepository.save(QuizOption.builder()
+        .order(quizOptionDto.getOrder())
+        .text(quizOptionDto.getText())
+        .quiz(quizOptionDto.getQuiz())
+        .build());
+       return quizOption;
     }
+
+    @Transactional(readOnly = false)
+    public QuizAnswer createQuizAnswer(QuizAnswerDto quizAnswerDto){
+        QuizAnswer quizAnswer = quizAnswerRepository.save(QuizAnswer.builder()
+        .quiz(quizAnswerDto.getQuiz())
+        .quizOption(quizAnswerDto.getQuizOption())
+        .build());
+        return quizAnswer;
+    }
+
 
 
 

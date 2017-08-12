@@ -1,10 +1,12 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.answer.QuizAnswer;
 import com.exquizme.domain.quiz.answer.QuizAnswerDto;
 import com.exquizme.domain.quiz.group.QuizGroup;
 import com.exquizme.domain.quiz.group.QuizGroupDto;
 import com.exquizme.domain.quiz.group.QuizGroupForm;
 import com.exquizme.domain.quiz.group.QuizGroupService;
+import com.exquizme.domain.quiz.option.QuizOption;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.quiz.result.QuizResult;
 import com.exquizme.domain.quiz.result.QuizResultDto;
@@ -88,7 +90,7 @@ public class QuizController {
 
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
     @PostMapping("/quizzes")
-    public ServerResponse postQuiz(Principal principal,QuizForm quizForm){
+    public ServerResponse postQuiz(Principal principal, @RequestBody @Valid QuizForm quizForm){
 
         // TODO: quizzes -> quiz_options -> quiz_answers
         User user = userService.getTestUser();
@@ -99,15 +101,25 @@ public class QuizController {
         quizDto.setUser(user);
         Quiz newQuiz = quizService.createQuiz(quizDto);
 
-//        //quiz_option
-//        QuizOptionDto quizOptionDto = new QuizOptionDto();
-//        quizOptionDto.setQuiz(newQuiz);
-//
-//        //quiz_Answer
-//        QuizAnswerDto quizAnswerDto = new QuizAnswerDto();
+        QuizAnswerDto quizAnswerDto = new QuizAnswerDto();
 
+        //quiz_option
+        QuizOption quizOption = new QuizOption();
+        String[] options = quizForm.getOptions();
+        QuizOptionDto quizOptionDto = new QuizOptionDto();
+        for(int i=0 ;i <options.length ;i++){
+            quizOptionDto.setOrder(i);
+            quizOptionDto.setQuiz(newQuiz);
+            quizOptionDto.setText(options[i]);
+            quizOption = quizService.createQuizOption(quizOptionDto);
+            if(i == quizForm.getAnswerIdx()){
+                quizAnswerDto.setQuizOption(quizOption);
+            }
+        }
 
-
+        //quiz_Answer
+        quizAnswerDto.setQuiz(newQuiz);
+        QuizAnswer quizAnswer = quizService.createQuizAnswer(quizAnswerDto);
         return ServerResponse.success();
     }
 
