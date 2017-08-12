@@ -100,8 +100,10 @@ public class QuizController {
 
     // 퀴즈 리스트 가져오는 API
     @GetMapping("/quizzes")
-    public User getQuizzes(Principal principal) {
-        return userService.getCurrentUser(principal);
+    public ServerResponse getQuizzes(Principal principal) {
+        User user = userService.getTestUser();
+        List<Quiz> quizList = quizService.findByUserId(user.getId());
+        return ServerResponse.success(QuizData.getQuizDataList(quizList));
     }
 
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)

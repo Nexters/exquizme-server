@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by garinkim on 2017. 8. 4..
  */
@@ -58,6 +60,10 @@ public class QuizService {
         return quizAnswer;
     }
 
+    @Transactional(readOnly = false)
+    public List<Quiz> findByUserId(Long userId){
+        return quizRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
 
 
 
