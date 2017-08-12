@@ -1,9 +1,11 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.group.QuizGroup;
 import com.exquizme.domain.quiz.group.QuizGroupDto;
 import com.exquizme.domain.quiz.group.QuizGroupForm;
 import com.exquizme.domain.quiz.group.QuizGroupService;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
+import com.exquizme.domain.quiz.result.QuizResult;
 import com.exquizme.domain.quiz.result.QuizResultDto;
 import com.exquizme.domain.quiz.result.QuizResultForm;
 import com.exquizme.domain.quiz.result.QuizResultService;
@@ -113,11 +115,11 @@ public class QuizController {
      * @apiName CreateQuizResult
      * @apiGroup QuizResult
      *
+     * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
      * @apiParam {Number} correct 맞춘 퀴즈 개수
      * @apiParam {Number} wrong 틀린 퀴즈 개수
      * @apiParam {Number} time 걸린 시간 (초)
      * @apiParam {String} nickname 닉네임
-     * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
      *
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizResult 객체
@@ -129,8 +131,12 @@ public class QuizController {
      */
     @PostMapping("/quiz/results")
     public ServerResponse postQuizResult(@RequestBody @Valid QuizResultForm quizResultForm) {
-        QuizResultDto quizResultDto = modelMapper.map(quizResultForm, QuizResultDto.class);
+        QuizResultDto quizResultDto = new QuizResultDto();
         quizResultDto.setQuizGroup(quizGroupService.findOne(quizResultForm.getQuizGroupId()));
+        quizResultDto.setCorrect(quizResultForm.getCorrect());
+        quizResultDto.setWrong(quizResultForm.getWrong());
+        quizResultDto.setTime(quizResultForm.getTime());
+        quizResultDto.setNickname(quizResultForm.getNickname());
 
         return ServerResponse.success(quizResultService.create(quizResultDto));
     }
