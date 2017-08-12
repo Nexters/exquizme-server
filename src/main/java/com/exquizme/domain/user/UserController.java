@@ -20,7 +20,11 @@ import java.util.Objects;
 public class UserController {
 
     /**
+<<<<<<< HEAD
      * @api {get} /login Login page
+=======
+     * @api {get} /api/login Login page
+>>>>>>> dea8672e61f4ced2ab1621b7beec44de6afed5a1
      * @apiName LoginPage
      * @apiGroup User
      *
@@ -37,7 +41,7 @@ public class UserController {
             redirectView.setUrl("/login");
             return redirectView;
         }
-        userService.getCurrentUser(principal);
+        log.info("User: {}", userService.getCurrentUser(principal).toString());
 
         // TODO: login 성공 후 이동할 클라이언트 페이지로 리다이렉트
         redirectView.setUrl("/user");
