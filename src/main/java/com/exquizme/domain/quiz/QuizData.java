@@ -1,5 +1,6 @@
 package com.exquizme.domain.quiz;
 
+import com.exquizme.domain.quiz.option.QuizOption;
 import com.exquizme.domain.quiz.option.QuizOptionData;
 import lombok.Data;
 
@@ -14,10 +15,9 @@ public class QuizData {
     private Long id;
     private List<QuizOptionData> quizOptionList;
 
-//    public static QuizData getQuizData(Quiz quiz){
-//
-//
-//    }
-//
-
+    public static QuizData getQuizData(Quiz quiz){
+        QuizData quizData = new QuizData();
+        quizData.setId(quiz.getId());
+        return quizData;
+    }
 }
