@@ -109,7 +109,7 @@ public class QuizController {
     public ServerResponse postQuiz(Principal principal, @RequestBody @Valid QuizForm quizForm){
 
         // TODO: quizzes -> quiz_options -> quiz_answers
-        User user = userService.getTestUser();
+        User user = userService.getCurrentUser(principal);
         // quizzes
         QuizDto quizDto = new QuizDto();
         quizDto.setText(quizForm.getText());
