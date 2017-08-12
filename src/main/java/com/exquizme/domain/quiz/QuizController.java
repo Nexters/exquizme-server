@@ -114,6 +114,7 @@ public class QuizController {
         // TODO: quizzes -> quiz_options -> quiz_answers
         User user = userService.getCurrentUser(principal);
 //        User user = userService.getTestUser();
+
         // quizzes
         QuizDto quizDto = new QuizDto();
         quizDto.setText(quizForm.getText());
@@ -147,15 +148,26 @@ public class QuizController {
 
     // 퀴즈 그룹 가져오는 API (유저 ID)
     /**
+<<<<<<< HEAD
+     * @api {post} /quiz/results Create quiz result
+     * @apiName CreateQuizResult
+     * @apiGroup QuizResult
+     *
+=======
      * @api {post} /api/quiz/results Create quiz result
      * @apiName CreateQuizResult
      * @apiGroup QuizResult
      *
      * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
+>>>>>>> dea8672e61f4ced2ab1621b7beec44de6afed5a1
      * @apiParam {Number} correct 맞춘 퀴즈 개수
      * @apiParam {Number} wrong 틀린 퀴즈 개수
      * @apiParam {Number} time 걸린 시간 (초)
      * @apiParam {String} nickname 닉네임
+<<<<<<< HEAD
+     * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
+=======
+>>>>>>> dea8672e61f4ced2ab1621b7beec44de6afed5a1
      *
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizResult 객체
@@ -179,7 +191,11 @@ public class QuizController {
     }
 
     /**
+<<<<<<< HEAD
+     * @api {get} /quiz/results/:guizGroupId Get quiz result list
+=======
      * @api {get} /api/quiz/results/:guizGroupId Get quiz result list
+>>>>>>> dea8672e61f4ced2ab1621b7beec44de6afed5a1
      * @apiName GetQuizResults
      * @apiGroup QuizResult
      *
