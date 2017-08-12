@@ -32,7 +32,7 @@ public class QuizOption {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @Column(name = "order")
+    @Column(name = "quiz_order")
     private Integer order;
 
     @Column(name = "text")
