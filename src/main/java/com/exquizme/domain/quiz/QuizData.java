@@ -5,6 +5,7 @@ import com.exquizme.domain.quiz.option.QuizOptionData;
 import lombok.Data;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by godong9 on 2017. 8. 5..
@@ -19,5 +20,12 @@ public class QuizData {
         QuizData quizData = new QuizData();
         quizData.setId(quiz.getId());
         return quizData;
+    }
+
+    // 퀴즈 리스트 가져오기
+    public static List<QuizData> getQuizDataList(List<Quiz> quizList){
+        return quizList.stream()
+                .map(QuizData::getQuizData)
+                .collect(Collectors.toList());
     }
 }
