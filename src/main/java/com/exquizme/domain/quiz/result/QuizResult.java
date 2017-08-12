@@ -28,7 +28,7 @@ public class QuizResult {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "quiz_group_id")
     private QuizGroup quizGroup;
 
