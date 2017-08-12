@@ -33,7 +33,7 @@ public class QuizAnswer {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "quiz_option_id")
     private QuizOption quizOption;
 

@@ -120,10 +120,8 @@ public class QuizController {
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
     @PostMapping("/quizzes")
     public ServerResponse postQuiz(Principal principal, @RequestBody @Valid QuizForm quizForm){
-
-        // TODO: quizzes -> quiz_options -> quiz_answers
-        User user = userService.getCurrentUser(principal);
-//        User user = userService.getTestUser();
+//        User user = userService.getCurrentUser(principal);
+        User user = userService.getTestUser();
 
         // quizzes
         QuizDto quizDto = new QuizDto();
