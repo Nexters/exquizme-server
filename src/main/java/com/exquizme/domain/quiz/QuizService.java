@@ -66,5 +66,8 @@ public class QuizService {
     }
 
 
-
+    @Transactional
+    public void deleteQuiz(Long id) {
+        quizRepository.delete(id);
+    }
 }
