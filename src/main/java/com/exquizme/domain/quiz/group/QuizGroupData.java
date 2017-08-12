@@ -32,7 +32,7 @@ public class QuizGroupData {
 
     public static List<QuizGroupData> getSimpleQuizGroupDataList(List<QuizGroup> quizGroupList) {
         return quizGroupList.stream()
-                .map(quizGroup -> getSimpleQuizGroupData(quizGroup))
+                .map(QuizGroupData::getSimpleQuizGroupData)
                 .collect(Collectors.toList());
     }
 }

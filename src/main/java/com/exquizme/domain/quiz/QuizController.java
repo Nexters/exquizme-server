@@ -2,9 +2,7 @@ package com.exquizme.domain.quiz;
 
 import com.exquizme.domain.quiz.group.*;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
-import com.exquizme.domain.quiz.result.QuizResultDto;
-import com.exquizme.domain.quiz.result.QuizResultForm;
-import com.exquizme.domain.quiz.result.QuizResultService;
+import com.exquizme.domain.quiz.result.*;
 import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserService;
 import com.exquizme.response.ServerResponse;
@@ -152,7 +150,8 @@ public class QuizController {
         quizResultDto.setTime(quizResultForm.getTime());
         quizResultDto.setNickname(quizResultForm.getNickname());
 
-        return ServerResponse.success(quizResultService.create(quizResultDto));
+        QuizResult quizResult = quizResultService.create(quizResultDto);
+        return ServerResponse.success(QuizResultData.getQuizResultData(quizResult));
     }
 
     /**
@@ -170,7 +169,7 @@ public class QuizController {
      */
     @GetMapping("/quiz/results/{quizGroupId}")
     public ServerResponse getQuizResults(@PathVariable @Valid Long quizGroupId) {
-        return ServerResponse.success(quizResultService.findByQuizGroup(quizGroupId));
+        List<QuizResult> quizResultList = quizResultService.findByQuizGroup(quizGroupId);
+        return ServerResponse.success(QuizResultData.getQuizResultDataList(quizResultList));
     }
-
 }
