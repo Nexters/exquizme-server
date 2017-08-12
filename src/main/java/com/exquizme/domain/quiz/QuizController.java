@@ -65,10 +65,23 @@ public class QuizController {
         return ServerResponse.success(QuizGroupData.getSimpleQuizGroupData(quizGroup));
     }
 
-    // 퀴즈 그룹 내려주는 API (퀴즈목록, 정답)
+    /**
+     * @api {get} /api/quiz/groups/:id Get quiz group
+     * @apiName GetQuizGroup
+     * @apiGroup QuizGroup
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data QuizGroup 객체
+     * @apiSuccess {Number} data.id QuizGroup id
+     * @apiSuccess {Number} data.url QuizGroup url
+     * @apiSuccess {Number} data.title QuizGroup title
+     */
     @GetMapping("/quiz/groups/{id}")
     public ServerResponse getQuizGroup(@PathVariable @Valid Long id) {
         // TODO: 퀴즈목록, 정답 내려줘야 함!
+
+        QuizGroup quizGroup = quizGroupService.findOne(id);
+        QuizGroupData quizGroupData = QuizGroupData.getQuizGroupData(quizGroup);
 
         List<Quiz> quizList = quizService.findByQuizGroupId(id);
         List<QuizData> quizDataList = QuizData.getQuizDataList(quizList);
@@ -82,7 +95,9 @@ public class QuizController {
                     quizData.setQuizAnswer(quizAnswerData);
                 });
 
-        return ServerResponse.success(quizDataList);
+        quizGroupData.setQuizList(quizDataList);
+
+        return ServerResponse.success(quizGroupData);
     }
 
     /**

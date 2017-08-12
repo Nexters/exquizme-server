@@ -18,7 +18,6 @@ public class QuizGroupData {
     private String url;
     private String title;
     private String userName;
-    private QuizAnswerData quizAnswer;
 
     public static QuizGroupData getSimpleQuizGroupData(QuizGroup quizGroup) {
         QuizGroupData quizGroupData = new QuizGroupData();
@@ -34,5 +33,16 @@ public class QuizGroupData {
         return quizGroupList.stream()
                 .map(QuizGroupData::getSimpleQuizGroupData)
                 .collect(Collectors.toList());
+    }
+
+    public static QuizGroupData getQuizGroupData(QuizGroup quizGroup) {
+        QuizGroupData quizGroupData = new QuizGroupData();
+        quizGroupData.setId(quizGroup.getId());
+        quizGroupData.setUrl("/" + quizGroup.getId());
+        quizGroupData.setTitle(quizGroup.getTitle());
+        quizGroupData.setUserName(quizGroup.getUser().getNickname());
+        quizGroupData.setQuizList(null);
+
+        return quizGroupData;
     }
 }
