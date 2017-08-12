@@ -48,8 +48,8 @@ public class QuizController {
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizGroup 객체
      * @apiSuccess {Number} data.id QuizGroup id
-     * @apiSuccess {Number} data.url QuizGroup url
-     * @apiSuccess {Number} data.title QuizGroup title
+     * @apiSuccess {String} data.url QuizGroup url
+     * @apiSuccess {String} data.title QuizGroup title
      */
     @PostMapping("/quiz/groups")
     public ServerResponse postQuizGroup(Principal principal, @RequestBody @Valid QuizGroupForm quizGroupForm) {
@@ -73,13 +73,67 @@ public class QuizController {
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizGroup 객체
      * @apiSuccess {Number} data.id QuizGroup id
-     * @apiSuccess {Number} data.url QuizGroup url
-     * @apiSuccess {Number} data.title QuizGroup title
+     * @apiSuccess {String} data.url QuizGroup url
+     * @apiSuccess {String} data.title QuizGroup title
+     * @apiSuccess {String} data.user_name QuizGroup 퀴즈 생성한 유저 네임
+     * @apiSuccess {Object[]} data.quiz_list Quiz 객체 배열
+     * @apiSuccess {Number} data.quiz_list.id Quiz id
+     * @apiSuccess {Object[]} data.quiz_list.quiz_option_list QuizOption 객체 배열
+     * @apiSuccess {Number} data.quiz_list.quiz_option_list.id QuizOption id
+     * @apiSuccess {Number} data.quiz_list.quiz_option_list.order QuizOption 순서
+     * @apiSuccess {String} data.quiz_list.quiz_option_list.text QuizOption 텍스트
+     * @apiSuccess {Object} data.quiz_list.quiz_answer QuizAnswer 객체
+     * @apiSuccess {Object} data.quiz_list.quiz_answer.quiz_option_id 정답인 QuizOption의 id
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *      HTTP/1.1 200 OK
+     *      {
+     *          "status":200,
+     *          "data":{
+     *              "id":1,
+     *              "quiz_list":[
+     *                  {
+     *                      "id":3,
+     *                      "quiz_option_list":[
+     *                          {"id":9,"order":0,"text":"test1"},
+     *                          {"id":10,"order":1,"text":"test2"},
+     *                          {"id":11,"order":2,"text":"test3"},
+     *                          {"id":12,"order":3,"text":"test4"}
+     *                      ],
+     *                      "quiz_answer":{"id":3,"quiz_option_id":10}
+     *                  },
+     *                  {
+     *                      "id":2,
+     *                      "quiz_option_list":[
+     *                          {"id":5,"order":0,"text":"test1"},
+     *                          {"id":6,"order":1,"text":"test2"},
+     *                          {"id":7,"order":2,"text":"test3"},
+     *                          {"id":8,"order":3,"text":"test4"}
+     *                      ],
+     *                      "quiz_answer":{"id":2,"quiz_option_id":8}
+     *                  },
+     *                  {
+     *                      "id":1,
+     *                      "quiz_option_list":[
+     *                          {"id":1,"order":0,"text":"test1"},
+     *                          {"id":2,"order":1,"text":"test2"},
+     *                          {"id":3,"order":2,"text":"test3"},
+     *                          {"id":4,"order":3,"text":"test4"}
+     *                      ],
+     *                      "quiz_answer":{"id":1,"quiz_option_id":3}
+     *                  }
+     *              ],
+     *              "url":"/1",
+     *              "title":"테스트퀴즈그룹",
+     *              "user_name":"Donghyun Go"
+     *          },
+     *          "message":null,
+     *          "count":null,
+     *          "error":null
+     *      }
      */
     @GetMapping("/quiz/groups/{id}")
     public ServerResponse getQuizGroup(@PathVariable @Valid Long id) {
-        // TODO: 퀴즈목록, 정답 내려줘야 함!
-
         QuizGroup quizGroup = quizGroupService.findOne(id);
         QuizGroupData quizGroupData = QuizGroupData.getQuizGroupData(quizGroup);
 
