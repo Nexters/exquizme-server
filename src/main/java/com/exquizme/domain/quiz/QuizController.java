@@ -41,7 +41,7 @@ public class QuizController {
     private UserService userService;
 
     /**
-     * @api {post} /quiz/groups Create quiz group
+     * @api {post} /api/quiz/groups Create quiz group
      * @apiName CreateQuizGroup
      * @apiGroup QuizGroup
      *
@@ -109,7 +109,7 @@ public class QuizController {
     // 퀴즈 삭제
 
     /**
-     * @api {post} /quiz/results Create quiz result
+     * @api {post} /api/quiz/results Create quiz result
      * @apiName CreateQuizResult
      * @apiGroup QuizResult
      *
@@ -136,7 +136,7 @@ public class QuizController {
     }
 
     /**
-     * @api {get} /quiz/results/:guizGroupId Get quiz result list
+     * @api {get} /api/quiz/results/:guizGroupId Get quiz result list
      * @apiName GetQuizResults
      * @apiGroup QuizResult
      *
