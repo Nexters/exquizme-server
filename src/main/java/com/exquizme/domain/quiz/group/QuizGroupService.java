@@ -1,11 +1,8 @@
 package com.exquizme.domain.quiz.group;
 
-import com.exquizme.domain.quiz.Quiz;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +29,10 @@ public class QuizGroupService {
 
     public QuizGroup findOne(Long id) {
         return quizGroupRepository.findOne(id);
+    }
+
+    public List<QuizGroup> findByUserId(Long userId) {
+        return quizGroupRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
     @Transactional(readOnly = false)

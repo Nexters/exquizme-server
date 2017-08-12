@@ -1,6 +1,5 @@
 package com.exquizme;
 
-import com.exquizme.domain.quiz.Quiz;
 import com.exquizme.domain.quiz.QuizController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
