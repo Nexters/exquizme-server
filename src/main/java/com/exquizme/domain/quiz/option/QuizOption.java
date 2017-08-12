@@ -32,8 +32,8 @@ public class QuizOption {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @Column(name = "quiz_order")
-    private Integer order;
+    @Column(name = "sequence")
+    private Integer sequence;
 
     @Column(name = "text")
     private String text;

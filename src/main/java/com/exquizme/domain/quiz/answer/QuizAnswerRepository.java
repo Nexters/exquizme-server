@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuizAnswerRepository extends JpaRepository<QuizAnswer, Long> {
-
+    QuizAnswer findByQuizId(Long quizId);
 }

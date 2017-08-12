@@ -1,13 +1,10 @@
 package com.exquizme.domain.quiz;
 
-import com.exquizme.domain.quiz.answer.QuizAnswer;
+import com.exquizme.domain.quiz.answer.QuizAnswerData;
 import com.exquizme.domain.quiz.answer.QuizAnswerDto;
-import com.exquizme.domain.quiz.group.QuizGroup;
-import com.exquizme.domain.quiz.group.QuizGroupDto;
-import com.exquizme.domain.quiz.group.QuizGroupForm;
-import com.exquizme.domain.quiz.group.QuizGroupService;
-import com.exquizme.domain.quiz.option.QuizOption;
 import com.exquizme.domain.quiz.group.*;
+import com.exquizme.domain.quiz.option.QuizOption;
+import com.exquizme.domain.quiz.option.QuizOptionData;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.quiz.result.*;
 import com.exquizme.domain.user.User;
@@ -51,8 +48,8 @@ public class QuizController {
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizGroup 객체
      * @apiSuccess {Number} data.id QuizGroup id
-     * @apiSuccess {Number} data.url QuizGroup url
-     * @apiSuccess {Number} data.title QuizGroup title
+     * @apiSuccess {String} data.url QuizGroup url
+     * @apiSuccess {String} data.title QuizGroup title
      */
     @PostMapping("/quiz/groups")
     public ServerResponse postQuizGroup(Principal principal, @RequestBody @Valid QuizGroupForm quizGroupForm) {
@@ -68,11 +65,93 @@ public class QuizController {
         return ServerResponse.success(QuizGroupData.getSimpleQuizGroupData(quizGroup));
     }
 
-    // 퀴즈 그룹 내려주는 API (퀴즈목록, 정답)
+    /**
+     * @api {get} /api/quiz/groups/:id Get quiz group
+     * @apiName GetQuizGroup
+     * @apiGroup QuizGroup
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data QuizGroup 객체
+     * @apiSuccess {Number} data.id QuizGroup id
+     * @apiSuccess {String} data.url QuizGroup url
+     * @apiSuccess {String} data.title QuizGroup title
+     * @apiSuccess {String} data.user_name QuizGroup 퀴즈 생성한 유저 네임
+     * @apiSuccess {Object[]} data.quiz_list Quiz 객체 배열
+     * @apiSuccess {Number} data.quiz_list.id Quiz id
+     * @apiSuccess {Object[]} data.quiz_list.quiz_option_list QuizOption 객체 배열
+     * @apiSuccess {Number} data.quiz_list.quiz_option_list.id QuizOption id
+     * @apiSuccess {Number} data.quiz_list.quiz_option_list.order QuizOption 순서
+     * @apiSuccess {String} data.quiz_list.quiz_option_list.text QuizOption 텍스트
+     * @apiSuccess {Object} data.quiz_list.quiz_answer QuizAnswer 객체
+     * @apiSuccess {Object} data.quiz_list.quiz_answer.quiz_option_id 정답인 QuizOption의 id
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *      HTTP/1.1 200 OK
+     *      {
+     *          "status":200,
+     *          "data":{
+     *              "id":1,
+     *              "quiz_list":[
+     *                  {
+     *                      "id":3,
+     *                      "quiz_option_list":[
+     *                          {"id":9,"order":0,"text":"test1"},
+     *                          {"id":10,"order":1,"text":"test2"},
+     *                          {"id":11,"order":2,"text":"test3"},
+     *                          {"id":12,"order":3,"text":"test4"}
+     *                      ],
+     *                      "quiz_answer":{"id":3,"quiz_option_id":10}
+     *                  },
+     *                  {
+     *                      "id":2,
+     *                      "quiz_option_list":[
+     *                          {"id":5,"order":0,"text":"test1"},
+     *                          {"id":6,"order":1,"text":"test2"},
+     *                          {"id":7,"order":2,"text":"test3"},
+     *                          {"id":8,"order":3,"text":"test4"}
+     *                      ],
+     *                      "quiz_answer":{"id":2,"quiz_option_id":8}
+     *                  },
+     *                  {
+     *                      "id":1,
+     *                      "quiz_option_list":[
+     *                          {"id":1,"order":0,"text":"test1"},
+     *                          {"id":2,"order":1,"text":"test2"},
+     *                          {"id":3,"order":2,"text":"test3"},
+     *                          {"id":4,"order":3,"text":"test4"}
+     *                      ],
+     *                      "quiz_answer":{"id":1,"quiz_option_id":3}
+     *                  }
+     *              ],
+     *              "url":"/1",
+     *              "title":"테스트퀴즈그룹",
+     *              "user_name":"Donghyun Go"
+     *          },
+     *          "message":null,
+     *          "count":null,
+     *          "error":null
+     *      }
+     */
     @GetMapping("/quiz/groups/{id}")
     public ServerResponse getQuizGroup(@PathVariable @Valid Long id) {
-        // TODO: 퀴즈목록, 정답 내려줘야 함!
-        return ServerResponse.success();
+        QuizGroup quizGroup = quizGroupService.findOne(id);
+        QuizGroupData quizGroupData = QuizGroupData.getQuizGroupData(quizGroup);
+
+        List<Quiz> quizList = quizService.findByQuizGroupId(id);
+        List<QuizData> quizDataList = QuizData.getQuizDataList(quizList);
+
+        quizDataList.forEach(quizData -> {
+                    List<QuizOption> quizOptionList = quizService.findQuizOptionsByQuizId(quizData.getId());
+                    List<QuizOptionData> quizOptionDataList = QuizOptionData.getQuizOptionDataList(quizOptionList);
+                    quizData.setQuizOptionList(quizOptionDataList);
+
+                    QuizAnswerData quizAnswerData = QuizAnswerData.getQuizAnswerData(quizService.findQuizAnswerByQuizId(quizData.getId()));
+                    quizData.setQuizAnswer(quizAnswerData);
+                });
+
+        quizGroupData.setQuizList(quizDataList);
+
+        return ServerResponse.success(quizGroupData);
     }
 
     /**
@@ -116,7 +195,7 @@ public class QuizController {
         User user = userService.getCurrentUser(principal);
         //User user = userService.getTestUser();
         List<Quiz> quizList = quizService.findByUserId(user.getId());
-        return ServerResponse.success(QuizData.getQuizDataList(quizList));
+        return ServerResponse.success(QuizData.getSimpleQuizDataList(quizList));
     }
 
 
@@ -140,10 +219,8 @@ public class QuizController {
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
     @PostMapping("/quizzes")
     public ServerResponse postQuiz(Principal principal, @RequestBody @Valid QuizForm quizForm){
-
-        // TODO: quizzes -> quiz_options -> quiz_answers
-//        User user = userService.getCurrentUser(principal);
-        User user = userService.getTestUser();
+        User user = userService.getCurrentUser(principal);
+//        User user = userService.getTestUser();
 
         // quizzes
         QuizDto quizDto = new QuizDto();
@@ -155,14 +232,13 @@ public class QuizController {
         QuizAnswerDto quizAnswerDto = new QuizAnswerDto();
 
         //quiz_option
-        QuizOption quizOption = new QuizOption();
         String[] options = quizForm.getOptions();
         QuizOptionDto quizOptionDto = new QuizOptionDto();
         for(int i=0 ;i <options.length ;i++){
             quizOptionDto.setOrder(i);
             quizOptionDto.setQuiz(newQuiz);
             quizOptionDto.setText(options[i]);
-            quizOption = quizService.createQuizOption(quizOptionDto);
+            QuizOption quizOption = quizService.createQuizOption(quizOptionDto);
             if(i == quizForm.getAnswerIdx()){
                 quizAnswerDto.setQuizOption(quizOption);
             }
@@ -170,8 +246,9 @@ public class QuizController {
 
         //quiz_Answer
         quizAnswerDto.setQuiz(newQuiz);
-        QuizAnswer quizAnswer = quizService.createQuizAnswer(quizAnswerDto);
-        return ServerResponse.success(newQuiz);
+        quizService.createQuizAnswer(quizAnswerDto);
+
+        return ServerResponse.success(QuizData.getSimpleQuizData(newQuiz));
     }
 
     // 퀴즈 삭제
@@ -204,7 +281,6 @@ public class QuizController {
      * @apiParam {Number} wrong 틀린 퀴즈 개수
      * @apiParam {Number} time 걸린 시간 (초)
      * @apiParam {String} nickname 닉네임
-
      * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
      *
      * @apiSuccess {Number} status 상태코드
@@ -229,7 +305,7 @@ public class QuizController {
     }
 
     /**
-     * @api {get} /api/quiz/results/:guizGroupId Get quiz result lists
+     * @api {get} /api/quiz/results/:guizGroupId Get quiz result list
      * @apiName GetQuizResults
      * @apiGroup QuizResult
      *
