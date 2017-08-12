@@ -1,13 +1,10 @@
 package com.exquizme.domain.quiz;
 
-import com.exquizme.domain.quiz.answer.QuizAnswer;
+import com.exquizme.domain.quiz.answer.QuizAnswerData;
 import com.exquizme.domain.quiz.answer.QuizAnswerDto;
-import com.exquizme.domain.quiz.group.QuizGroup;
-import com.exquizme.domain.quiz.group.QuizGroupDto;
-import com.exquizme.domain.quiz.group.QuizGroupForm;
-import com.exquizme.domain.quiz.group.QuizGroupService;
-import com.exquizme.domain.quiz.option.QuizOption;
 import com.exquizme.domain.quiz.group.*;
+import com.exquizme.domain.quiz.option.QuizOption;
+import com.exquizme.domain.quiz.option.QuizOptionData;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.quiz.result.*;
 import com.exquizme.domain.user.User;
@@ -72,7 +69,20 @@ public class QuizController {
     @GetMapping("/quiz/groups/{id}")
     public ServerResponse getQuizGroup(@PathVariable @Valid Long id) {
         // TODO: 퀴즈목록, 정답 내려줘야 함!
-        return ServerResponse.success();
+
+        List<Quiz> quizList = quizService.findByQuizGroupId(id);
+        List<QuizData> quizDataList = QuizData.getQuizDataList(quizList);
+
+        quizDataList.forEach(quizData -> {
+                    List<QuizOption> quizOptionList = quizService.findQuizOptionsByQuizId(quizData.getId());
+                    List<QuizOptionData> quizOptionDataList = QuizOptionData.getQuizOptionDataList(quizOptionList);
+                    quizData.setQuizOptionList(quizOptionDataList);
+
+                    QuizAnswerData quizAnswerData = QuizAnswerData.getQuizAnswerData(quizService.findQuizAnswerByQuizId(quizData.getId()));
+                    quizData.setQuizAnswer(quizAnswerData);
+                });
+
+        return ServerResponse.success(quizDataList);
     }
 
     /**
@@ -104,7 +114,7 @@ public class QuizController {
         User user = userService.getCurrentUser(principal);
 //        User user = userService.getTestUser();
         List<Quiz> quizList = quizService.findByUserId(user.getId());
-        return ServerResponse.success(QuizData.getQuizDataList(quizList));
+        return ServerResponse.success(QuizData.getSimpleQuizDataList(quizList));
     }
 
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
@@ -141,33 +151,22 @@ public class QuizController {
         quizAnswerDto.setQuiz(newQuiz);
         quizService.createQuizAnswer(quizAnswerDto);
 
-        return ServerResponse.success(QuizData.getQuizData(newQuiz));
+        return ServerResponse.success(QuizData.getSimpleQuizData(newQuiz));
     }
 
     // 퀴즈 삭제
 
     // 퀴즈 그룹 가져오는 API (유저 ID)
     /**
-<<<<<<< HEAD
-     * @api {post} /quiz/results Create quiz result
-     * @apiName CreateQuizResult
-     * @apiGroup QuizResult
-     *
-=======
      * @api {post} /api/quiz/results Create quiz result
      * @apiName CreateQuizResult
      * @apiGroup QuizResult
      *
      * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
->>>>>>> dea8672e61f4ced2ab1621b7beec44de6afed5a1
      * @apiParam {Number} correct 맞춘 퀴즈 개수
      * @apiParam {Number} wrong 틀린 퀴즈 개수
      * @apiParam {Number} time 걸린 시간 (초)
      * @apiParam {String} nickname 닉네임
-<<<<<<< HEAD
-     * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
-=======
->>>>>>> dea8672e61f4ced2ab1621b7beec44de6afed5a1
      *
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizResult 객체
@@ -191,11 +190,7 @@ public class QuizController {
     }
 
     /**
-<<<<<<< HEAD
-     * @api {get} /quiz/results/:guizGroupId Get quiz result list
-=======
      * @api {get} /api/quiz/results/:guizGroupId Get quiz result list
->>>>>>> dea8672e61f4ced2ab1621b7beec44de6afed5a1
      * @apiName GetQuizResults
      * @apiGroup QuizResult
      *
