@@ -101,7 +101,8 @@ public class QuizController {
     // 퀴즈 리스트 가져오는 API
     @GetMapping("/quizzes")
     public ServerResponse getQuizzes(Principal principal) {
-        User user = userService.getTestUser();
+        User user = userService.getCurrentUser(principal);
+//        User user = userService.getTestUser();
         List<Quiz> quizList = quizService.findByUserId(user.getId());
         return ServerResponse.success(QuizData.getQuizDataList(quizList));
     }
@@ -111,7 +112,8 @@ public class QuizController {
     public ServerResponse postQuiz(Principal principal, @RequestBody @Valid QuizForm quizForm){
 
         // TODO: quizzes -> quiz_options -> quiz_answers
-        User user = userService.getTestUser();
+        User user = userService.getCurrentUser(principal);
+//        User user = userService.getTestUser();
         // quizzes
         QuizDto quizDto = new QuizDto();
         quizDto.setText(quizForm.getText());
