@@ -31,6 +31,7 @@ public class Quiz {
     @Column(name = "text")
     private String text;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private QuizType type;
 
