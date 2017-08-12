@@ -1,12 +1,8 @@
 package com.exquizme.domain.quiz;
 
-import com.exquizme.domain.user.User;
-import com.exquizme.domain.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.security.Principal;
 
 /**
  * Created by garinkim on 2017. 8. 4..

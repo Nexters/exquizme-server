@@ -1,11 +1,9 @@
 package com.exquizme.domain.quiz;
 
-import com.exquizme.domain.quiz.group.QuizGroup;
 import com.exquizme.domain.quiz.group.QuizGroupDto;
 import com.exquizme.domain.quiz.group.QuizGroupForm;
 import com.exquizme.domain.quiz.group.QuizGroupService;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
-import com.exquizme.domain.quiz.result.QuizResult;
 import com.exquizme.domain.quiz.result.QuizResultDto;
 import com.exquizme.domain.quiz.result.QuizResultForm;
 import com.exquizme.domain.quiz.result.QuizResultService;
@@ -13,7 +11,6 @@ import com.exquizme.domain.user.User;
 import com.exquizme.domain.user.UserService;
 import com.exquizme.response.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +24,6 @@ import java.security.Principal;
 @Slf4j
 @RestController
 public class QuizController {
-    @Autowired
-    private ModelMapper modelMapper;
-
     @Autowired
     private QuizService quizService;
 
@@ -76,8 +70,27 @@ public class QuizController {
         return ServerResponse.success();
     }
 
-    // 퀴즈 그룹 가져오는 API (유저 ID)
-    
+    /**
+     * @api {get} /api/quiz/user/groups Get user quiz groups
+     * @apiName GetUserQuizGroups
+     * @apiGroup QuizGroup
+     *
+     * @apiDescription 현재 로그인되어 있는 유저의 퀴즈 목록 가져오는 API
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data QuizGroup 객체
+     * @apiSuccess {Number} data.id QuizGroup id
+     * @apiSuccess {Number} data.url QuizGroup url
+     * @apiSuccess {Number} data.title QuizGroup title
+     */
+    @GetMapping("/quiz/user/groups")
+    public ServerResponse getQuizGroupByUserId(Principal principal) {
+        // TODO: 유저 ID 기반으로 퀴즈 그룹 가져와야함
+        User user = userService.getCurrentUser(principal); // TODO: 주석 해제
+//        User user = userService.getTestUser();
+
+        return ServerResponse.success(quizGroupService.findByUserId(user.getId()));
+    }
 
     // 퀴즈 리스트 가져오는 API
     @GetMapping("/quizzes")
