@@ -1,8 +1,6 @@
 package com.exquizme.domain.quiz;
 
-import com.exquizme.domain.quiz.group.QuizGroupDto;
-import com.exquizme.domain.quiz.group.QuizGroupForm;
-import com.exquizme.domain.quiz.group.QuizGroupService;
+import com.exquizme.domain.quiz.group.*;
 import com.exquizme.domain.quiz.option.QuizOptionDto;
 import com.exquizme.domain.quiz.result.QuizResultDto;
 import com.exquizme.domain.quiz.result.QuizResultForm;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Created by godong9 on 2017. 7. 22..
@@ -60,7 +59,8 @@ public class QuizController {
         quizGroupDto.setQuizIds(quizGroupForm.getQuizIds());
         quizGroupDto.setUser(user);
 
-        return ServerResponse.success(quizGroupService.createQuizGroup(quizGroupDto));
+        QuizGroup quizGroup = quizGroupService.createQuizGroup(quizGroupDto);
+        return ServerResponse.success(QuizGroupData.getSimpleQuizGroupData(quizGroup));
     }
 
     // 퀴즈 그룹 내려주는 API (퀴즈목록, 정답)
@@ -89,7 +89,8 @@ public class QuizController {
         User user = userService.getCurrentUser(principal); // TODO: 주석 해제
 //        User user = userService.getTestUser();
 
-        return ServerResponse.success(quizGroupService.findByUserId(user.getId()));
+        List<QuizGroup> quizGroupList = quizGroupService.findByUserId(user.getId());
+        return ServerResponse.success(QuizGroupData.getSimpleQuizGroupDataList(quizGroupList));
     }
 
     // 퀴즈 리스트 가져오는 API
