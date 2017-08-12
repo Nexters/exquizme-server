@@ -97,12 +97,12 @@ public class QuizController {
         quizDto.setUser(user);
         Quiz newQuiz = quizService.createQuiz(quizDto);
 
-        //quiz_option
-        QuizOptionDto quizOptionDto = new QuizOptionDto();
-        quizOptionDto.setQuiz(newQuiz);
-
-        //quiz_Answer
-        QuizAnswerDto quizAnswerDto = new QuizAnswerDto();
+//        //quiz_option
+//        QuizOptionDto quizOptionDto = new QuizOptionDto();
+//        quizOptionDto.setQuiz(newQuiz);
+//
+//        //quiz_Answer
+//        QuizAnswerDto quizAnswerDto = new QuizAnswerDto();
 
 
 
