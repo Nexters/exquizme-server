@@ -53,8 +53,8 @@ public class QuizController {
      */
     @PostMapping("/quiz/groups")
     public ServerResponse postQuizGroup(Principal principal, @RequestBody @Valid QuizGroupForm quizGroupForm) {
-//        User user = userService.getCurrentUser(principal); // TODO: 주석 해제
-        User user = userService.getTestUser();
+        User user = userService.getCurrentUser(principal);
+//        User user = userService.getTestUser();
 
         QuizGroupDto quizGroupDto = new QuizGroupDto();
         quizGroupDto.setTitle(quizGroupForm.getTitle());
@@ -169,8 +169,7 @@ public class QuizController {
      */
     @GetMapping("/quiz/user/groups")
     public ServerResponse getQuizGroupByUserId(Principal principal) {
-        // TODO: 유저 ID 기반으로 퀴즈 그룹 가져와야함
-        User user = userService.getCurrentUser(principal); // TODO: 주석 해제
+        User user = userService.getCurrentUser(principal);
 //        User user = userService.getTestUser();
 
         List<QuizGroup> quizGroupList = quizGroupService.findByUserId(user.getId());
