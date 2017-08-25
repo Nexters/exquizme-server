@@ -58,6 +58,10 @@ public class QuizService {
         return quizAnswer;
     }
 
+    public Quiz findById(Long quizId){
+        return quizRepository.findOne(quizId);
+    }
+
     public List<Quiz> findByUserId(Long userId){
         return quizRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }

@@ -14,18 +14,24 @@ import java.util.stream.Collectors;
 @Data
 public class QuizData {
     private Long id;
+    private String text;
+    private Integer quizType;
     private List<QuizOptionData> quizOptionList;
     private QuizAnswerData quizAnswer;
 
     public static QuizData getSimpleQuizData(Quiz quiz){
         QuizData quizData = new QuizData();
         quizData.setId(quiz.getId());
+        quizData.setText(quiz.getText());
+        quizData.setQuizType((quiz.getType().toString().equals("SELECT") ? 0 : 1));
         return quizData;
     }
 
     public static QuizData getQuizData(Quiz quiz){
         QuizData quizData = new QuizData();
         quizData.setId(quiz.getId());
+        quizData.setText(quiz.getText());
+        quizData.setQuizType((quiz.getType().toString().equals("SELECT") ? 0 : 1));
         quizData.setQuizOptionList(null);
         quizData.setQuizAnswer(null);
         return quizData;

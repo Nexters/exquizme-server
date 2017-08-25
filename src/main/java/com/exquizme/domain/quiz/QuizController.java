@@ -186,6 +186,8 @@ public class QuizController {
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data Quiz 객체
      * @apiSuccess {Number} data.id Quiz id
+     * @apiSuccess {Number} data.text Quiz 제목
+     * @apiSuccess {Number} data.quiz_type Quiz 타입 (0: 객관식, 1: 주관식)
      * @apiSuccess {String} data.quiz_option_list Quiz Option list
      */
     // 퀴즈 리스트 가져오는 API
@@ -197,6 +199,31 @@ public class QuizController {
         return ServerResponse.success(QuizData.getSimpleQuizDataList(quizList));
     }
 
+
+    /**
+     * @api {get} /api/quizzes/:id  Get Quiz
+     * @apiName GetQuiz
+     * @apiGroup Quiz
+     *
+     * @apiDescription 퀴즈 가져오는 API
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data Quiz 객체
+     */
+    // 퀴즈 리스트 가져오는 API
+    @GetMapping("/quizzes/{id}")
+    public ServerResponse getQuizzes(@PathVariable @Valid Long id) {
+        Quiz quiz = quizService.findById(id);
+        QuizData quizData = QuizData.getQuizData(quiz);
+
+        List<QuizOptionData> quizOptionDataList = QuizOptionData.getQuizOptionDataList(quizService.findQuizOptionsByQuizId(id));
+        quizData.setQuizOptionList(quizOptionDataList);
+
+        QuizAnswerData quizAnswerData = QuizAnswerData.getQuizAnswerData(quizService.findQuizAnswerByQuizId(id));
+        quizData.setQuizAnswer(quizAnswerData);
+
+        return ServerResponse.success(quizData);
+    }
 
     /**
      * @api {post} /api/quizzes Create quiz
