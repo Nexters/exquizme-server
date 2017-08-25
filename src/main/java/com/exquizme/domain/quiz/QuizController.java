@@ -53,8 +53,8 @@ public class QuizController {
      */
     @PostMapping("/quiz/groups")
     public ServerResponse postQuizGroup(Principal principal, @RequestBody @Valid QuizGroupForm quizGroupForm) {
-        User user = userService.getCurrentUser(principal);
-//        User user = userService.getTestUser();
+//        User user = userService.getCurrentUser(principal); // TODO
+        User user = userService.getTestUser();
 
         QuizGroupDto quizGroupDto = new QuizGroupDto();
         quizGroupDto.setTitle(quizGroupForm.getTitle());
@@ -169,8 +169,8 @@ public class QuizController {
      */
     @GetMapping("/quiz/user/groups")
     public ServerResponse getQuizGroupByUserId(Principal principal) {
-        User user = userService.getCurrentUser(principal);
-//        User user = userService.getTestUser();
+//        User user = userService.getCurrentUser(principal); // TODO
+        User user = userService.getTestUser();
 
         List<QuizGroup> quizGroupList = quizGroupService.findByUserId(user.getId());
         return ServerResponse.success(QuizGroupData.getSimpleQuizGroupDataList(quizGroupList));
@@ -191,8 +191,8 @@ public class QuizController {
     // 퀴즈 리스트 가져오는 API
     @GetMapping("/quizzes")
     public ServerResponse getQuizzes(Principal principal) {
-        User user = userService.getCurrentUser(principal);
-        //User user = userService.getTestUser();
+//        User user = userService.getCurrentUser(principal); // TODO
+        User user = userService.getTestUser();
         List<Quiz> quizList = quizService.findByUserId(user.getId());
         return ServerResponse.success(QuizData.getSimpleQuizDataList(quizList));
     }
@@ -218,8 +218,8 @@ public class QuizController {
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
     @PostMapping("/quizzes")
     public ServerResponse postQuiz(Principal principal, @RequestBody @Valid QuizForm quizForm){
-        User user = userService.getCurrentUser(principal);
-//        User user = userService.getTestUser();
+//        User user = userService.getCurrentUser(principal); // TODO
+        User user = userService.getTestUser();
 
         // quizzes
         QuizDto quizDto = new QuizDto();
