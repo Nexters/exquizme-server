@@ -66,6 +66,12 @@ public class QuizService {
         return quizRepository.findByQuizGroupIdOrderByCreatedAtDesc(quizGroupId);
     }
 
+
+    @Transactional
+    public void deleteQuiz(Long id) {
+        quizRepository.delete(id);
+    }
+
     public List<QuizOption> findQuizOptionsByQuizId(Long quizId) {
         return quizOptionRepository.findByQuizIdOrderBySequenceAsc(quizId);
     }

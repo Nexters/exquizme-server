@@ -53,8 +53,8 @@ public class QuizController {
      */
     @PostMapping("/quiz/groups")
     public ServerResponse postQuizGroup(Principal principal, @RequestBody @Valid QuizGroupForm quizGroupForm) {
-//        User user = userService.getCurrentUser(principal); // TODO: 주석 해제
-        User user = userService.getTestUser();
+        User user = userService.getCurrentUser(principal);
+//        User user = userService.getTestUser();
 
         QuizGroupDto quizGroupDto = new QuizGroupDto();
         quizGroupDto.setTitle(quizGroupForm.getTitle());
@@ -169,28 +169,57 @@ public class QuizController {
      */
     @GetMapping("/quiz/user/groups")
     public ServerResponse getQuizGroupByUserId(Principal principal) {
-        // TODO: 유저 ID 기반으로 퀴즈 그룹 가져와야함
-        User user = userService.getCurrentUser(principal); // TODO: 주석 해제
+        User user = userService.getCurrentUser(principal);
 //        User user = userService.getTestUser();
 
         List<QuizGroup> quizGroupList = quizGroupService.findByUserId(user.getId());
         return ServerResponse.success(QuizGroupData.getSimpleQuizGroupDataList(quizGroupList));
     }
 
+    /**
+     * @api {get} /api/quizzes  Get Quizzes
+     * @apiName GetQuizzes
+     * @apiGroup Quiz
+     *
+     * @apiDescription 퀴즈 리스트를 가져오는 API
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data Quiz 객체
+     * @apiSuccess {Number} data.id Quiz id
+     * @apiSuccess {String} data.quiz_option_list Quiz Option list
+     */
     // 퀴즈 리스트 가져오는 API
     @GetMapping("/quizzes")
     public ServerResponse getQuizzes(Principal principal) {
         User user = userService.getCurrentUser(principal);
-//        User user = userService.getTestUser();
+        //User user = userService.getTestUser();
         List<Quiz> quizList = quizService.findByUserId(user.getId());
         return ServerResponse.success(QuizData.getSimpleQuizDataList(quizList));
     }
 
+
+    /**
+     * @api {post} /api/quizzes Create quiz
+     * @apiName CreateQuiz
+     * @apiGroup Quiz
+     *
+     * @apiParam {Stinrg} text 퀴즈 내용
+     * @apiParam {String} type 퀴즈 타입
+     * @apiParam {String[]} options 퀴즈 옵션
+     * @apiParam {Number} answerIdx 퀴즈 정답 인덱스
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data Quiz 객체
+     * @apiSuccess {Number} data.id Quiz Id
+     * @apiSuccess {String} data.text 퀴즈 내용
+     * @apiSuccess {Number} data.quiz_group 퀴즈 그룹 아이디
+     * @apiSuccess {Object} data.user 퀴즈 작성자
+     */
     // 개별 퀴즈 만드는 API (퀴즈 옵션들 포함)
     @PostMapping("/quizzes")
     public ServerResponse postQuiz(Principal principal, @RequestBody @Valid QuizForm quizForm){
-//        User user = userService.getCurrentUser(principal);
-        User user = userService.getTestUser();
+        User user = userService.getCurrentUser(principal);
+//        User user = userService.getTestUser();
 
         // quizzes
         QuizDto quizDto = new QuizDto();
@@ -222,6 +251,23 @@ public class QuizController {
     }
 
     // 퀴즈 삭제
+    /**
+     * @api {delete} /api/quizzes/:id Delete Quizzes
+     * @apiName deleteQuiz
+     * @apiGroup Quiz
+     *
+     * @apiParam {Number} id 퀴즈 아이디
+     *
+     * @apiDescription 단일 퀴즈 삭제하는 API
+     *
+     * @apiSuccess {Number} status 상태코드
+     * @apiSuccess {Object} data null
+     */
+    @DeleteMapping("/quizzes/{id}")
+    public ServerResponse deleteQuiz(@PathVariable @Valid Long id){
+        quizService.deleteQuiz(id);
+        return ServerResponse.success(null);
+    }
 
     // 퀴즈 그룹 가져오는 API (유저 ID)
     /**
@@ -234,6 +280,7 @@ public class QuizController {
      * @apiParam {Number} wrong 틀린 퀴즈 개수
      * @apiParam {Number} time 걸린 시간 (초)
      * @apiParam {String} nickname 닉네임
+     * @apiParam {Number} quiz_group_id 퀴즈 그룹 id
      *
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizResult 객체

@@ -9,4 +9,5 @@ import java.util.List;
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     List<Quiz> findByQuizGroupIdOrderByCreatedAtDesc(Long quizGroupId);
     List<Quiz> findByUserIdOrderByCreatedAtDesc(Long userId);
+
 }
