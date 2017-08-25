@@ -43,7 +43,7 @@ public class QuizController {
      * @apiGroup QuizGroup
      *
      * @apiParam {String} title 퀴즈 그룹 제목
-     * @apiParam {L[]} quiz_ids 퀴즈 아이디 배열
+     * @apiParam {Number[]} quiz_ids 퀴즈 아이디 배열
      *
      * @apiSuccess {Number} status 상태코드
      * @apiSuccess {Object} data QuizGroup 객체
