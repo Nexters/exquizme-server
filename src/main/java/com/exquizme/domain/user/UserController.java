@@ -39,8 +39,7 @@ public class UserController {
         }
         log.info("User: {}", userService.getCurrentUser(principal).toString());
 
-        // TODO: login 성공 후 이동할 클라이언트 페이지로 리다이렉트
-        redirectView.setUrl("/user");
+        redirectView.setUrl("http://exquiz.me/");
         return redirectView;
     }
 
